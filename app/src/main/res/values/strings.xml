@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">LifeTracker</string>
+    <string name="wish_blank">This is your wish list. It is blank yet. I you want too add
+    new wish - click on "+1" button, that you will find on tool bar</string>
+
+    <string name="page_achievements">Achievements</string>
+    <string name="page_wishes">Wishes</string>
+    <string name="achievement_hint">Add your achievement here…</string>
+
+    <string name="menu_share">Share</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_notify">Notification</string>
+
+    <string name="alert_title">Oops!</string>
+    <string name="alert_message_share">Nothing to share!</string>
+    <string name="alert_message_add">Can not add an empty field!</string>
+    <string name="alert_positive_button">Well, OK</string>
+</resources>
