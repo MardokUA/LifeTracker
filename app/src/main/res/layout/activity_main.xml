@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -9,39 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        app:elevation="6dp">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/ToolBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentTop="true"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:elevation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways"/>
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_below="@+id/toolbar"
-            android:background="@color/colorPrimary"
-            android:minHeight="@dimen/app_bar_height"
-            app:elevation="0dp"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="#FFFFFF"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="#FFFFFF"
-            app:tabTextColor="#D3D3D3" />
-
-    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/app_bar" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

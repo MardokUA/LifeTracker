@@ -15,4 +15,7 @@
     <string name="alert_message_share">Nothing to share!</string>
     <string name="alert_message_add">Can not add an empty field!</string>
     <string name="alert_positive_button">Well, OK</string>
+    <string name="menu_pick_date">Pick date</string>
+    <string name="menu_messages">Messages</string>
+    <string name="button_send_message">Send</string>
 </resources>

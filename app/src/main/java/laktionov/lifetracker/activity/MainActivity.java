@@ -1,6 +1,9 @@
 package laktionov.lifetracker.activity;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,16 +11,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 
@@ -32,22 +35,24 @@ import laktionov.lifetracker.adapter.TabAdapter;
 import laktionov.lifetracker.controller.ItemActionController;
 import laktionov.lifetracker.data.DBOpenHelper;
 import laktionov.lifetracker.fragment.AchievementFragment;
+import laktionov.lifetracker.fragment.TimePickerDialogFragment;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener, MenuItem.OnMenuItemClickListener {
 
-    private static final String TAG = "SHARE CHECK";
     private static final String SETTINGS = "settings";
     private static final String NOTIFY = "is check";
+
     private static final int ALERT_SHARE = 1;
     private static final int ALERT_ADD = 2;
+    private static final int NOTIFY_ID = 7;
 
     private TabAdapter tabAdapter;
-    private ShareActionProvider shareActionProvider;
     private ItemActionController itemActionController;
     private ArrayList<String> shareItems;
     private SharedPreferences settings;
     private boolean isChecked;
     private boolean isActive;
+    private long timeSet;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -95,17 +100,21 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         getMenuInflater().inflate(R.menu.menu_app, menu);
         MenuItem action_share = menu.findItem(R.id.action_share);
         MenuItem action_notify = menu.findItem(R.id.action_notify);
+        MenuItem action_pick_time = menu.findItem(R.id.action_pick_time);
+        MenuItem action_chat = menu.findItem(R.id.action_chat);
 
         action_notify.setChecked(isChecked);
-        shareActionProvider = new ShareActionProvider(this) {
-            @Override
-            public View onCreateActionView() {
-                return null;
-            }
-        };
+//        shareActionProvider = new ShareActionProvider(this) {
+//            @Override
+//            public View onCreateActionView() {
+//                return null;
+//            }
+//        };
         action_share.setOnMenuItemClickListener(this);
         action_notify.setOnMenuItemClickListener(this);
-        MenuItemCompat.setActionProvider(action_share, shareActionProvider);
+        action_pick_time.setOnMenuItemClickListener(this);
+        action_chat.setOnMenuItemClickListener(this);
+//        MenuItemCompat.setActionProvider(action_share, shareActionProvider);
         return true;
     }
 
@@ -114,11 +123,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         switch (item.getItemId()) {
             case R.id.action_share:
                 shareItems = (ArrayList<String>) itemActionController.getShareItems();
-                Log.i(TAG, shareItems.toString());
                 if (shareItems.size() == 0) {
                     alertMessage(ALERT_SHARE);
                 } else {
-                    shareActionProvider.setShareIntent(shareIntent());
+                    startActivity(buildIntent());
                 }
                 break;
             case R.id.action_notify:
@@ -127,6 +135,19 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean(NOTIFY, item.isChecked())
                         .apply();
+                break;
+            case R.id.action_pick_time:
+                DialogFragment fragment = new TimePickerDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putLong("TIME", timeSet);
+                FragmentManager fm = getSupportFragmentManager();
+                fm.putFragment(bundle, "TIME", fragment);
+                fragment.show(fm, "TIME");
+                break;
+            case R.id.action_chat:
+                //TODO: Chat activity
+                Intent intent = new Intent(this, MessagesActivity.class);
+                startActivity(intent);
                 break;
         }
         return true;
@@ -181,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         database.close();
     }
 
-    private Intent shareIntent() {
+    private Intent buildIntent() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         String entry = "";
         intent.setType("text/plain");
@@ -201,4 +222,26 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         builder.show();
     }
 
+    private void createNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(android.R.drawable.ic_dialog_email)
+                .setContentTitle("Test notification")
+                .setContentText("A small text in")
+                .setWhen(System.currentTimeMillis() + 3000);
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFY_ID, builder.build());
+    }
+
+    @Override
+    protected void onDestroy() {
+        createNotification();
+        super.onDestroy();
+    }
 }
