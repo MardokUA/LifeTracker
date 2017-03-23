@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "908767488555",
+    "firebase_url": "https://lifetracker-a8926.firebaseio.com",
+    "project_id": "lifetracker-a8926",
+    "storage_bucket": "lifetracker-a8926.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908767488555:android:a86a41aba5e9d38c",
+        "android_client_info": {
+          "package_name": "laktionov.lifetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908767488555-rd92hjot8c645rkv8b7iise2alkttkc7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "laktionov.lifetracker",
+            "certificate_hash": "02072259a200953fbe95d2b13699a3904fdf9bc8"
+          }
+        },
+        {
+          "client_id": "908767488555-m5njtkm25uiene00n5davmarmgi9372o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOfw0dk7hQB4cQS1zgwmWKtrdfJyxY4So"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908767488555-m5njtkm25uiene00n5davmarmgi9372o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
