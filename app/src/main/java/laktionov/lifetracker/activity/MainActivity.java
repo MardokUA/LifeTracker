@@ -138,11 +138,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 break;
             case R.id.action_pick_time:
                 DialogFragment fragment = new TimePickerDialogFragment();
-                Bundle bundle = new Bundle();
-                bundle.putLong("TIME", timeSet);
-                FragmentManager fm = getSupportFragmentManager();
-                fm.putFragment(bundle, "TIME", fragment);
-                fragment.show(fm, "TIME");
+                fragment.show(getSupportFragmentManager(), "TIME");
                 break;
             case R.id.action_chat:
                 //TODO: Chat activity
@@ -222,26 +218,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         builder.show();
     }
 
-    private void createNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(android.R.drawable.ic_dialog_email)
-                .setContentTitle("Test notification")
-                .setContentText("A small text in")
-                .setWhen(System.currentTimeMillis() + 3000);
-        Intent resultIntent = new Intent(this, MainActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFY_ID, builder.build());
-    }
-
     @Override
     protected void onDestroy() {
-        createNotification();
         super.onDestroy();
     }
 }

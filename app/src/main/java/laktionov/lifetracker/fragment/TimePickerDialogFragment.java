@@ -1,7 +1,11 @@
 package laktionov.lifetracker.fragment;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,10 +14,14 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import laktionov.lifetracker.receiver.TimeNotification;
+
 
 public class TimePickerDialogFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     private long timeSet;
+    private long timeToNotify;
+    private AlarmManager alarmManager;
 
     public TimePickerDialogFragment() {
     }
@@ -37,6 +45,21 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        timeToNotify = calendar.getTimeInMillis();
+        restartNotify();
+    }
+
+    private void restartNotify() {
+        alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getContext(), TimeNotification.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.cancel(pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeToNotify, AlarmManager.INTERVAL_DAY, pendingIntent);
+
 
     }
 }
