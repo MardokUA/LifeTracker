@@ -16,10 +16,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import laktionov.lifetracker.R;
+import laktionov.lifetracker.adapter.Decorator;
 import laktionov.lifetracker.adapter.WishAdapter;
 import laktionov.lifetracker.interfaces.OnItemDeletedListener;
 import laktionov.lifetracker.loader.AsyncEntryLoader;
 import laktionov.lifetracker.model.Item;
+import laktionov.lifetracker.utils.GlobalVariables;
 
 public class WishFragment extends Fragment implements OnItemDeletedListener {
 
@@ -44,20 +46,21 @@ public class WishFragment extends Fragment implements OnItemDeletedListener {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         rv_wish_list.setHasFixedSize(true);
         rv_wish_list.setLayoutManager(manager);
+        rv_wish_list.addItemDecoration(new Decorator(1));
 
         listItem = new ArrayList<>();
         adapter = new WishAdapter(listItem, getActivity());
         adapter.setOnItemDeletedListener(this);
         rv_wish_list.setAdapter(adapter);
 
-        new AsyncEntryLoader(getActivity(), listItem, adapter, AsyncEntryLoader.FROM_WISH_FRAGMENT).execute();
+        new AsyncEntryLoader(getActivity(), listItem, adapter, GlobalVariables.FROM_WISH_FRAGMENT).execute();
 
         return root;
     }
 
     @Override
     public void onItemDeleted() {
-        new AsyncEntryLoader(getActivity(), listItem, adapter, AsyncEntryLoader.FROM_WISH_FRAGMENT).execute();
+        new AsyncEntryLoader(getActivity(), listItem, adapter, GlobalVariables.FROM_WISH_FRAGMENT).execute();
     }
 
     @Override

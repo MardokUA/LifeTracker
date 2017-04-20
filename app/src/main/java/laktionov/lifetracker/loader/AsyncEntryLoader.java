@@ -7,17 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import laktionov.lifetracker.adapter.AchievementAdapter;
 import laktionov.lifetracker.data.DBOpenHelper;
 import laktionov.lifetracker.model.Item;
+import laktionov.lifetracker.utils.GlobalVariables;
 
 public class AsyncEntryLoader extends AsyncTask<Void, Void, Void> {
-
-    public static final int FROM_WISH_FRAGMENT = 0;
-    public static final int FROM_ACHIEVEMENT_FRAGMENT = 1;
 
     private DBOpenHelper helper;
     private SQLiteDatabase database;
@@ -41,10 +37,10 @@ public class AsyncEntryLoader extends AsyncTask<Void, Void, Void> {
         database = helper.getWritableDatabase();
         Cursor cursor = null;
 
-        if (from == FROM_WISH_FRAGMENT) {
+        if (from == GlobalVariables.FROM_WISH_FRAGMENT) {
             cursor = database.query(DBOpenHelper.TABLE_WISH, null, null, null, null, null, null, null);
         }
-        if (from == FROM_ACHIEVEMENT_FRAGMENT) {
+        if (from == GlobalVariables.FROM_ACHIEVEMENT_FRAGMENT) {
             cursor = database.query(DBOpenHelper.TABLE_ACHIEVEMENT, null, null, null, null, null, null, null);
         }
         cursor.moveToFirst();

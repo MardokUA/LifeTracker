@@ -1,9 +1,6 @@
 package laktionov.lifetracker.activity;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,18 +9,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-
 
 import java.util.ArrayList;
 
@@ -35,16 +28,10 @@ import laktionov.lifetracker.adapter.TabAdapter;
 import laktionov.lifetracker.controller.ItemActionController;
 import laktionov.lifetracker.data.DBOpenHelper;
 import laktionov.lifetracker.fragment.AchievementFragment;
-import laktionov.lifetracker.fragment.TimePickerDialogFragment;
+import laktionov.lifetracker.fragment.DatePickerDialogFragment;
+import laktionov.lifetracker.utils.GlobalVariables;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener, MenuItem.OnMenuItemClickListener {
-
-    private static final String SETTINGS = "settings";
-    private static final String NOTIFY = "is check";
-
-    private static final int ALERT_SHARE = 1;
-    private static final int ALERT_ADD = 2;
-    private static final int NOTIFY_ID = 7;
 
     private TabAdapter tabAdapter;
     private ItemActionController itemActionController;
@@ -52,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private SharedPreferences settings;
     private boolean isChecked;
     private boolean isActive;
-    private long timeSet;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -77,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        settings = getSharedPreferences(SETTINGS, 0);
-        isChecked = settings.getBoolean(NOTIFY, false);
+        settings = getSharedPreferences(GlobalVariables.SETTINGS, 0);
+        isChecked = settings.getBoolean(GlobalVariables.NOTIFY, false);
         itemActionController = ItemActionController.getInstance(this);
 
         setSupportActionBar(toolbar);
@@ -86,12 +72,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tabAdapter = new TabAdapter(getSupportFragmentManager());
         viewPager.setAdapter(tabAdapter);
 
-        tabLayout.addTab(tabLayout.newTab().setText(tabAdapter.getPageTitle(TabAdapter.FRAGMENT_WISHES)));
-        tabLayout.addTab(tabLayout.newTab().setText(tabAdapter.getPageTitle(TabAdapter.FRAGMENT_ACHIEVEMENT)));
+        tabLayout.addTab(tabLayout.newTab().setText(tabAdapter.getPageTitle(GlobalVariables.FRAGMENT_WISHES)));
+        tabLayout.addTab(tabLayout.newTab().setText(tabAdapter.getPageTitle(GlobalVariables.FRAGMENT_ACHIEVEMENT)));
         tabLayout.addOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(viewPager);
 
-        viewPager.setCurrentItem(TabAdapter.FRAGMENT_WISHES);
+        viewPager.setCurrentItem(GlobalVariables.FRAGMENT_WISHES);
         fab.setOnClickListener(this);
     }
 
@@ -104,17 +90,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         MenuItem action_chat = menu.findItem(R.id.action_chat);
 
         action_notify.setChecked(isChecked);
-//        shareActionProvider = new ShareActionProvider(this) {
-//            @Override
-//            public View onCreateActionView() {
-//                return null;
-//            }
-//        };
         action_share.setOnMenuItemClickListener(this);
         action_notify.setOnMenuItemClickListener(this);
         action_pick_time.setOnMenuItemClickListener(this);
         action_chat.setOnMenuItemClickListener(this);
-//        MenuItemCompat.setActionProvider(action_share, shareActionProvider);
         return true;
     }
 
@@ -124,20 +103,20 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             case R.id.action_share:
                 shareItems = (ArrayList<String>) itemActionController.getShareItems();
                 if (shareItems.size() == 0) {
-                    alertMessage(ALERT_SHARE);
+                    alertMessage(GlobalVariables.ALERT_SHARE);
                 } else {
                     startActivity(buildIntent());
                 }
                 break;
             case R.id.action_notify:
                 item.setChecked(!item.isChecked());
-                settings = getSharedPreferences(SETTINGS, 0);
+                settings = getSharedPreferences(GlobalVariables.SETTINGS, 0);
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean(NOTIFY, item.isChecked())
+                editor.putBoolean(GlobalVariables.NOTIFY, item.isChecked())
                         .apply();
                 break;
             case R.id.action_pick_time:
-                DialogFragment fragment = new TimePickerDialogFragment();
+                DialogFragment fragment = new DatePickerDialogFragment();
                 fragment.show(getSupportFragmentManager(), "TIME");
                 break;
             case R.id.action_chat:
@@ -151,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        isActive = tab.getPosition() == TabAdapter.FRAGMENT_WISHES;
+        isActive = tab.getPosition() == GlobalVariables.FRAGMENT_WISHES;
     }
 
     @Override
@@ -175,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     EditText et_new_achievement = ButterKnife.findById(this, R.id.et_new_achievement);
                     AchievementFragment fragment = tabAdapter.getAchievementFragment();
                     if (et_new_achievement.getText().toString().isEmpty()) {
-                        alertMessage(ALERT_ADD);
+                        alertMessage(GlobalVariables.ALERT_ADD);
                     } else {
                         addAchievementToDB(et_new_achievement, fragment);
                     }
@@ -210,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     private void alertMessage(int from) {
-        String message = (from == ALERT_SHARE) ? message_share : message_add;
+        String message = (from == GlobalVariables.ALERT_SHARE) ? message_share : message_add;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(alert_title);
         builder.setMessage(message);

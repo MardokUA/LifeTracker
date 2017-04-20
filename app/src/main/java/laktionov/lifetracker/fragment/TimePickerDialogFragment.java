@@ -10,15 +10,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import laktionov.lifetracker.receiver.TimeNotification;
+import laktionov.lifetracker.utils.GlobalVariables;
 
 
 public class TimePickerDialogFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
@@ -36,6 +33,8 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
         if (savedInstanceState != null) {
             timeSet = savedInstanceState.getLong("TIME");
         }
+        timeSet = getArguments().getLong(GlobalVariables.TIME_TO_NOTIFY);
+
     }
 
     @NonNull
@@ -49,18 +48,13 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        if (Calendar.HOUR_OF_DAY < hourOfDay) {
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.DAY_OF_WEEK + 1);
-        }
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
-        timeToNotify = calendar.getTimeInMillis();
-        restartNotify();
-        Log.i("TAG", String.valueOf(timeToNotify) + " ===== " + String.valueOf(System.currentTimeMillis()));
+        int convertHoursToMillis = 3600000;
+        int convertMinutesToMillis = 60000;
+        timeToNotify = timeSet + (hourOfDay * convertHoursToMillis) + (minute * convertMinutesToMillis);
+        creatingNotification();
     }
 
-    private void restartNotify() {
+    private void creatingNotification() {
         alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext(), TimeNotification.class);
 

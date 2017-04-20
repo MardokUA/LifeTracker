@@ -12,9 +12,9 @@ import java.util.List;
 
 import laktionov.lifetracker.R;
 import laktionov.lifetracker.controller.ItemActionController;
-import laktionov.lifetracker.interfaces.OnItemAddedListener;
 import laktionov.lifetracker.interfaces.OnItemDeletedListener;
 import laktionov.lifetracker.model.Item;
+import laktionov.lifetracker.utils.GlobalVariables;
 
 
 public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.AchievementHolder> {
@@ -47,7 +47,7 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
         ib_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemActionController.deleteItemFromDB(items, position, ItemActionController.FROM_ACHIEVEMENT);
+                itemActionController.deleteItemFromDB(items, position, GlobalVariables.FROM_ACHIEVEMENT);
                 onItemDeletedListener.onItemDeleted();
             }
         });

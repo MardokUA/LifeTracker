@@ -22,6 +22,7 @@ import laktionov.lifetracker.interfaces.OnItemAddedListener;
 import laktionov.lifetracker.interfaces.OnItemDeletedListener;
 import laktionov.lifetracker.loader.AsyncEntryLoader;
 import laktionov.lifetracker.model.Item;
+import laktionov.lifetracker.utils.GlobalVariables;
 
 public class AchievementFragment extends Fragment implements OnItemDeletedListener, OnItemAddedListener {
 
@@ -52,19 +53,19 @@ public class AchievementFragment extends Fragment implements OnItemDeletedListen
         adapter.setOnItemDeletedListener(this);
         rv_achievement_list.setAdapter(adapter);
 
-        new AsyncEntryLoader(getActivity(), listItem, adapter, AsyncEntryLoader.FROM_ACHIEVEMENT_FRAGMENT).execute();
+        new AsyncEntryLoader(getActivity(), listItem, adapter, GlobalVariables.FROM_ACHIEVEMENT_FRAGMENT).execute();
 
         return root;
     }
 
     @Override
     public void onItemDeleted() {
-        new AsyncEntryLoader(getActivity(), listItem, adapter, AsyncEntryLoader.FROM_ACHIEVEMENT_FRAGMENT).execute();
+        new AsyncEntryLoader(getActivity(), listItem, adapter, GlobalVariables.FROM_ACHIEVEMENT_FRAGMENT).execute();
     }
 
     @Override
     public void onItemAdded() {
-        new AsyncEntryLoader(getActivity(), listItem, adapter, AsyncEntryLoader.FROM_ACHIEVEMENT_FRAGMENT).execute();
+        new AsyncEntryLoader(getActivity(), listItem, adapter, GlobalVariables.FROM_ACHIEVEMENT_FRAGMENT).execute();
     }
 
     @Override

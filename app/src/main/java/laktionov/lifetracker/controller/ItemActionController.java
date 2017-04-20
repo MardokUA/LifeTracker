@@ -11,11 +11,9 @@ import java.util.List;
 
 import laktionov.lifetracker.data.DBOpenHelper;
 import laktionov.lifetracker.model.Item;
+import laktionov.lifetracker.utils.GlobalVariables;
 
 public class ItemActionController {
-
-    public static final int FROM_WISH = 1;
-    public static final int FROM_ACHIEVEMENT = 2;
 
     private List<String> shareItems;
     private Context context;
@@ -41,10 +39,10 @@ public class ItemActionController {
     public void deleteItemFromDB(List<Item> items, int position, int from) {
         DBOpenHelper helper = new DBOpenHelper(context);
         SQLiteDatabase db = helper.getWritableDatabase();
-        if (from == FROM_WISH) {
+        if (from == GlobalVariables.FROM_WISH) {
             db.delete(DBOpenHelper.TABLE_WISH, "_id = ?", new String[]{String.valueOf(items.get(position).getId())});
         }
-        if (from == FROM_ACHIEVEMENT) {
+        if (from == GlobalVariables.FROM_ACHIEVEMENT) {
             db.delete(DBOpenHelper.TABLE_ACHIEVEMENT, "_id = ?", new String[]{String.valueOf(items.get(position).getId())});
         }
         helper.close();

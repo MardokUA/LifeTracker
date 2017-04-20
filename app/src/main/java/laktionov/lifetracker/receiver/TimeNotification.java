@@ -9,11 +9,10 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import laktionov.lifetracker.activity.MainActivity;
+import laktionov.lifetracker.utils.GlobalVariables;
 
 
 public class TimeNotification extends BroadcastReceiver {
-
-    public static final int NOTIFY_ID = 777;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -31,6 +30,6 @@ public class TimeNotification extends BroadcastReceiver {
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setContentIntent(pendingIntent);
 
-        notificationManager.notify(NOTIFY_ID, builder.build());
+        notificationManager.notify(GlobalVariables.NOTIFY_ID, builder.build());
     }
 }

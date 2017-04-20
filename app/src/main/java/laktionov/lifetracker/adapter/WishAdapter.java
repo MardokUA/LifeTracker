@@ -1,7 +1,6 @@
 package laktionov.lifetracker.adapter;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,14 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import laktionov.lifetracker.R;
 import laktionov.lifetracker.controller.ItemActionController;
-import laktionov.lifetracker.data.DBOpenHelper;
 import laktionov.lifetracker.interfaces.OnItemDeletedListener;
 import laktionov.lifetracker.model.Item;
+import laktionov.lifetracker.utils.GlobalVariables;
 
 public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder> {
 
@@ -50,7 +48,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder> {
         ib_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemActionController.deleteItemFromDB(items, position, ItemActionController.FROM_WISH);
+                itemActionController.deleteItemFromDB(items, position, GlobalVariables.FROM_WISH);
                 onItemDeletedListener.onItemDeleted();
             }
         });

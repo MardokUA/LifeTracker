@@ -1,50 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_wishes"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="3dp">
+    android:paddingTop="3dp">
 
     <android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_wishes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:minHeight="40dp"
         android:clickable="true"
-        android:onClick="onClick"
-        card_view:cardCornerRadius="4dp">
+        android:minHeight="40dp"
+        android:onClick="onClick">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageButton
-                android:id="@+id/ib_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:scaleType="center"
-                android:background="@null"
-                android:clickable="true"
-                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_wish"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="5dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:gravity="fill"
-                android:textSize="16sp" />
+                android:padding="5dp"
+                android:text="TEST TEXT"
+                android:textSize="16sp">
+
+            </TextView>
+
+            <laktionov.lifetracker.view.ButtonView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_gravity="end" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
-
-
 </LinearLayout>

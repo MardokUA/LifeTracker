@@ -7,12 +7,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import laktionov.lifetracker.fragment.AchievementFragment;
 import laktionov.lifetracker.fragment.WishFragment;
+import laktionov.lifetracker.utils.GlobalVariables;
 
 public class TabAdapter extends FragmentPagerAdapter {
-
-    public static final int FRAGMENT_WISHES = 0;
-    public static final int FRAGMENT_ACHIEVEMENT = 1;
-    public static final int FRAGMENT_COUNT = 2;
 
     private String[] tabTitles = new String[]{"wishes", "achievements"};
     private WishFragment wishFragment;
@@ -25,10 +22,6 @@ public class TabAdapter extends FragmentPagerAdapter {
         achievementFragment = new AchievementFragment();
     }
 
-    public WishFragment getWishFragment() {
-        return wishFragment;
-    }
-
     public AchievementFragment getAchievementFragment() {
         return achievementFragment;
     }
@@ -38,12 +31,12 @@ public class TabAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         Bundle args;
         switch (position) {
-            case FRAGMENT_WISHES:
+            case GlobalVariables.FRAGMENT_WISHES:
                 fragment = wishFragment;
                 args = new Bundle();
                 args.putInt("position", position);
                 break;
-            case FRAGMENT_ACHIEVEMENT:
+            case GlobalVariables.FRAGMENT_ACHIEVEMENT:
                 fragment = achievementFragment;
                 args = new Bundle();
                 args.putInt("position", position + 1);
@@ -54,7 +47,7 @@ public class TabAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return FRAGMENT_COUNT;
+        return GlobalVariables.FRAGMENT_COUNT;
     }
 
     @Override
