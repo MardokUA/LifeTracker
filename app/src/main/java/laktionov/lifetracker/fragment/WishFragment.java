@@ -16,7 +16,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import laktionov.lifetracker.R;
-import laktionov.lifetracker.adapter.Decorator;
 import laktionov.lifetracker.adapter.WishAdapter;
 import laktionov.lifetracker.interfaces.OnItemDeletedListener;
 import laktionov.lifetracker.loader.AsyncEntryLoader;
@@ -46,7 +45,6 @@ public class WishFragment extends Fragment implements OnItemDeletedListener {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         rv_wish_list.setHasFixedSize(true);
         rv_wish_list.setLayoutManager(manager);
-        rv_wish_list.addItemDecoration(new Decorator(1));
 
         listItem = new ArrayList<>();
         adapter = new WishAdapter(listItem, getActivity());

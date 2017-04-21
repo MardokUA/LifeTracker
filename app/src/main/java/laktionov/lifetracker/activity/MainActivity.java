@@ -18,6 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
+
 import java.util.ArrayList;
 
 import butterknife.BindString;
@@ -29,6 +36,7 @@ import laktionov.lifetracker.controller.ItemActionController;
 import laktionov.lifetracker.data.DBOpenHelper;
 import laktionov.lifetracker.fragment.AchievementFragment;
 import laktionov.lifetracker.fragment.DatePickerDialogFragment;
+import laktionov.lifetracker.utils.BackgroundManager;
 import laktionov.lifetracker.utils.GlobalVariables;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener, MenuItem.OnMenuItemClickListener {
@@ -37,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ItemActionController itemActionController;
     private ArrayList<String> shareItems;
     private SharedPreferences settings;
+    private FirebaseJobDispatcher jobDispatcher;
     private boolean isChecked;
     private boolean isActive;
 
@@ -195,6 +204,37 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         builder.setMessage(message);
         builder.setPositiveButton(alert_button, null);
         builder.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (jobDispatcher != null) {
+            jobDispatcher.cancel("testing_job");
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        startJobScheduling();
+    }
+
+    private void startJobScheduling() {
+        Bundle bundle = new Bundle();
+        bundle.putString("test1", "testing message");
+
+        jobDispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+        Job backgroundService = jobDispatcher.newJobBuilder()
+                .setService(BackgroundManager.class)
+                .setTag("testing_job")
+                .setRecurring(false)
+                .setTrigger(Trigger.executionWindow(0, 10))
+                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                .setExtras(bundle)
+                .build();
+
+        jobDispatcher.mustSchedule(backgroundService);
     }
 
     @Override
