@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/LifeTracker.iml" filepath="$PROJECT_DIR$/LifeTracker.iml" />
+      <module fileurl="file://G:\Android Studio Projects\LifeTracker\LifeTracker.iml" filepath="G:\Android Studio Projects\LifeTracker\LifeTracker.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://G:\Android Studio Projects\LifeTracker\app\app.iml" filepath="G:\Android Studio Projects\LifeTracker\app\app.iml" />
     </modules>
   </component>
 </project>
